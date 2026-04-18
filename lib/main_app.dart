@@ -8,13 +8,11 @@ class MainApp extends StatelessWidget {
   const MainApp({Key? key}) : super(key: key);
 
   @override
-
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: context.locale,
       theme: themeDataLight(),
-     
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
       navigatorKey: navigatorKey,
@@ -25,26 +23,28 @@ class MainApp extends StatelessWidget {
             const Breakpoint(start: 601, end: 1200, name: TABLET),
             const Breakpoint(start: 1201, end: double.infinity, name: DESKTOP),
           ],
-
           child: Builder(
             builder: (responsiveContext) {
               return ResponsiveScaledBox(
-                width:
-                    ResponsiveValue<double?>(
-                      responsiveContext,
-                      conditionalValues: [
-                        const Condition.equals(name: MOBILE, value: 400),
-                        const Condition.equals(name: TABLET, value: 800),
-                        const Condition.largerThan(name: TABLET, value: 1000),
-                      ],
-                    ).value,
+                width: ResponsiveValue<double?>(
+                  responsiveContext,
+                  conditionalValues: [
+                    const Condition.equals(name: MOBILE, value: 400),
+                    const Condition.equals(name: TABLET, value: 800),
+                    const Condition.largerThan(name: TABLET, value: 1000),
+                  ],
+                ).value,
                 child: child!,
               );
             },
           ),
         );
       },
-      home: const Placeholder(),
+      home: Scaffold(
+        body: Center(
+          child: Text('Hello, World!'),
+        ),
+      ),
     );
   }
 }

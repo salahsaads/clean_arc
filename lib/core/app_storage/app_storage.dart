@@ -1,42 +1,95 @@
-// import 'dart:convert';
-// // import 'package:curva/core/widgets/splach_screen.dart';
-// // import 'package:curva/modules/auth/models/user_model.dart';
-// // import 'package:curva/modules/auth/presentation/screens/login.dart';
-// // import 'package:curva/modules/nav_bar/presentation/bloc/nav_bar_cubit.dart';
-// // import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// import '../routes/navigator_push.dart';
+class AppStorage {
+  static late SharedPreferences _prefs;
 
+  /// 🔥 Keys (خليهم هنا عشان التنظيم)
+  static const String keyToken = 'token';
+  static const String keyLocale = 'locale';
+  static const String keyTheme = 'theme';
+  static const String keyUser = 'user';
 
-// class AppStorage {
+  /// ✅ Initialization
+  static Future<void> init() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
 
-//   static GetStorage _box = GetStorage();
+  /// ==============================
+  /// ✅ Generic Methods
+  /// ==============================
 
-//   static Future<void> init() async => await GetStorage.init();
+  static Future<bool> setString(String key, String value) async {
+    return await _prefs.setString(key, value);
+  }
 
-//   static Future<void> cacheToken(String value)=> _box.write('token', value);
+  static String? getString(String key) {
+    return _prefs.getString(key);
+  }
 
-//   static void cacheId(int id) => _box.write('id', id);
+  static Future<bool> setBool(String key, bool value) async {
+    return await _prefs.setBool(key, value);
+  }
 
-//   static Future<void> cacheUser(UserModel user) async => await _box.write('user', json.encode(user.toJson()));
+  static bool getBool(String key, {bool defaultValue = false}) {
+    return _prefs.getBool(key) ?? defaultValue;
+  }
 
-//   static void cacheStatus(bool status) => _box.write('status', status);
+  static Future<bool> setInt(String key, int value) async {
+    return await _prefs.setInt(key, value);
+  }
 
-//   static UserModel get getUserModel => UserModel.fromJson(json.decode(_box.read('user')));
+  static int getInt(String key, {int defaultValue = 0}) {
+    return _prefs.getInt(key) ?? defaultValue;
+  }
 
+  static Future<bool> setDouble(String key, double value) async {
+    return await _prefs.setDouble(key, value);
+  }
 
+  static double getDouble(String key, {double defaultValue = 0.0}) {
+    return _prefs.getDouble(key) ?? defaultValue;
+  }
 
-//   static String get getToken => _box.read("token");
-//   static bool get getStatus => _box.read("status");
-//   static bool get isLogged => _box.hasData('token');
+  static Future<bool> remove(String key) async {
+    return await _prefs.remove(key);
+  }
 
-//   static void signOut()  {
-//     _box.erase();
-//     NavBarCubit.of(RouteManager.currentContext).currentIndex = 0;
-//     RouteManager.navigateAndPopAll(LoginScreen());
-//   }
+  static Future<bool> clear() async {
+    return await _prefs.clear();
+  }
 
-// }
+  /// ==============================
+  /// 🔥 Custom Helpers (الأهم)
+  /// ==============================
 
+  /// Token
+  static Future<void> saveToken(String token) async {
+    await setString(keyToken, token);
+  }
 
+  static String? getToken() {
+    return getString(keyToken);
+  }
 
+  static Future<void> clearToken() async {
+    await remove(keyToken);
+  }
+
+  /// Locale
+  static Future<void> saveLocale(String locale) async {
+    await setString(keyLocale, locale);
+  }
+
+  static String getLocale() {
+    return getString(keyLocale) ?? 'ar';
+  }
+
+  /// Theme (light / dark)
+  static Future<void> saveTheme(bool isDark) async {
+    await setBool(keyTheme, isDark);
+  }
+
+  static bool isDarkMode() {
+    return getBool(keyTheme);
+  }
+}
