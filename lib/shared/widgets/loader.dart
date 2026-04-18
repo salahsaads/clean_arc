@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import 'dart:math';
 
-import '../theme/app_colors.dart';
+import '../../core/theme/app_colors.dart';
 
 
 
