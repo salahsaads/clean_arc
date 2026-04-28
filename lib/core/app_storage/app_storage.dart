@@ -1,65 +1,65 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AppStorage {
-  static late SharedPreferences _prefs;
+  static final GetStorage _box = GetStorage();
 
-  /// 🔥 Keys (خليهم هنا عشان التنظيم)
+  /// Keys
   static const String keyToken = 'token';
   static const String keyLocale = 'locale';
   static const String keyTheme = 'theme';
   static const String keyUser = 'user';
 
-  /// ✅ Initialization
+  /// Initialization
   static Future<void> init() async {
-    _prefs = await SharedPreferences.getInstance();
+    await GetStorage.init();
   }
 
   /// ==============================
-  /// ✅ Generic Methods
+  /// Generic Methods
   /// ==============================
 
-  static Future<bool> setString(String key, String value) async {
-    return await _prefs.setString(key, value);
+  static Future<void> setString(String key, String value) async {
+    await _box.write(key, value);
   }
 
   static String? getString(String key) {
-    return _prefs.getString(key);
+    return _box.read<String>(key);
   }
 
-  static Future<bool> setBool(String key, bool value) async {
-    return await _prefs.setBool(key, value);
+  static Future<void> setBool(String key, bool value) async {
+    await _box.write(key, value);
   }
 
   static bool getBool(String key, {bool defaultValue = false}) {
-    return _prefs.getBool(key) ?? defaultValue;
+    return _box.read<bool>(key) ?? defaultValue;
   }
 
-  static Future<bool> setInt(String key, int value) async {
-    return await _prefs.setInt(key, value);
+  static Future<void> setInt(String key, int value) async {
+    await _box.write(key, value);
   }
 
   static int getInt(String key, {int defaultValue = 0}) {
-    return _prefs.getInt(key) ?? defaultValue;
+    return _box.read<int>(key) ?? defaultValue;
   }
 
-  static Future<bool> setDouble(String key, double value) async {
-    return await _prefs.setDouble(key, value);
+  static Future<void> setDouble(String key, double value) async {
+    await _box.write(key, value);
   }
 
   static double getDouble(String key, {double defaultValue = 0.0}) {
-    return _prefs.getDouble(key) ?? defaultValue;
+    return _box.read<double>(key) ?? defaultValue;
   }
 
-  static Future<bool> remove(String key) async {
-    return await _prefs.remove(key);
+  static Future<void> remove(String key) async {
+    await _box.remove(key);
   }
 
-  static Future<bool> clear() async {
-    return await _prefs.clear();
+  static Future<void> clear() async {
+    await _box.erase();
   }
 
   /// ==============================
-  /// 🔥 Custom Helpers (الأهم)
+  /// Custom Helpers
   /// ==============================
 
   /// Token
